@@ -37,6 +37,7 @@ export const currencyToNumber = (str, currencyFormat, valueAsInteger = false) =>
 
 export const numberToCurrency = (value, options) => {
   if (!value && !isNumber(value)) return null
+  value = value.toString()
   const { allowNegative, autoDecimalMode, locale } = options
   let distractionFree = options.distractionFree
   if (distractionFree === true || !distractionFree) {

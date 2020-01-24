@@ -48,24 +48,11 @@ describe('currencyToNumber', () => {
 })
 
 describe('numberToCurrency', () => {
-  it('returns null if the value is falsey and not a number', () => {
-    expect(numberToCurrency('', {})).toBeNull()
-    expect(numberToCurrency(' ', {})).toBeNull()
-    expect(numberToCurrency(null, {})).toBeNull()
-    expect(numberToCurrency(undefined, {})).toBeNull()
-  })
-
-  it('returns null if the value is invalid', () => {
-    expect(numberToCurrency('-', {})).toBeNull()
-    expect(numberToCurrency('123e-1', {})).toBeNull()
-    expect(numberToCurrency('0x11', {})).toBeNull()
-    expect(numberToCurrency('0b11', {})).toBeNull()
-    expect(numberToCurrency('0o11', {})).toBeNull()
-    expect(numberToCurrency('1.2e1', { decimalSymbol: '.' })).toBeNull()
-    expect(numberToCurrency('1.23.4', { decimalSymbol: '.' })).toBeNull()
-  })
-
   it('returns the parsed currency if the value conforms to the currency format config', () => {
-    expect(numberToCurrency(1234, { decimalSymbol: '.' })).toBe(1234)
+    expect(numberToCurrency(1234.00, { decimalSymbol: '.', locale: 'en', currency: 'USD' })).toBe('$1,234')
+    expect(numberToCurrency(1234.00, { autoDecimalMode: true, decimalSymbol: '.', locale: 'en', currency: 'USD', distractionFree: { hideNegligibleDecimalDigits: false } })).toBe('$1,234.00')
+
+    expect(numberToCurrency(1234.44, { decimalSymbol: '.', locale: 'en', currency: 'USD' })).toBe('$1,234.44')
+    expect(numberToCurrency(1234.44, { decimalSymbol: '.', locale: 'en', currency: 'EUR' })).toBe('€1,234.44')
   })
 })
