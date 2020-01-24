@@ -6,7 +6,7 @@ import createCurrencyFormat from './utils/createCurrencyFormat'
 import dispatchEvent from './utils/dispatchEvent'
 import equal from './utils/equal'
 import { toFloat, toInteger } from './utils/numberUtils'
-import parse from './utils/parse'
+import { currencyToNumber } from './utils/parse'
 import { insertCurrencySymbol } from './utils/stringUtils'
 
 const init = (el, optionsFromBinding, { $CI_DEFAULT_OPTIONS }) => {
@@ -80,7 +80,7 @@ const updateInputValue = (el, value, hideNegligibleDecimalDigits = false) => {
       el.$ci.numberValue = conformedValue
     } else {
       el.value = conformedValue
-      el.$ci.numberValue = parse(el.value, currencyFormat, false)
+      el.$ci.numberValue = currencyToNumber(el.value, currencyFormat, false)
     }
   } else {
     el.value = el.$ci.numberValue = null
@@ -143,7 +143,7 @@ export default {
     Vue.nextTick(() => {
       const { value, $ci: { currencyFormat, options } } = inputElement
       if (value) {
-        applyFixedFractionFormat(inputElement, toFloat(parse(value, currencyFormat), options.valueAsInteger, currencyFormat.maximumFractionDigits))
+        applyFixedFractionFormat(inputElement, toFloat(currencyToNumber(value, currencyFormat), options.valueAsInteger, currencyFormat.maximumFractionDigits))
       }
     })
     addEventListener(inputElement)
